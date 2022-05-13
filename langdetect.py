@@ -60,7 +60,7 @@ def write_ngrams(table: Table, filename: str):
     Writes ngram frequency table to a file.
     """
     # Sort table by values
-    sorted_table = dict(sorted(table.items(), key=lambda x: x[0]))
+    sorted_table = dict(sorted(table.items(), key=lambda x: x[1], reverse=True))
 
     # Put the lines in the correct format
     lines = [f"{freq} {word}\n" for word, freq in sorted_table.items()]
