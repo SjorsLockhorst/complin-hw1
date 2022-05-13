@@ -9,7 +9,7 @@ def prepare(text: str) -> List[str]:
     Tokinzes a text into words.
     """
     subbed = re.sub(r'[!?",.()<>]', r' ', text)
-    return re.split(r"\W+", subbed)
+    return subbed.split()
 
 def ngrams(seq: Sequence[Any], n: int = 3) -> List[Any]:
     """

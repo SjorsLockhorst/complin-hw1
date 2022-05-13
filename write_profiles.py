@@ -7,7 +7,7 @@ from langdetect import (
 )
 
 
-def make_profiles(path: str, n: int, limit: int):
+def make_profiles(datafolder: str, n: int, limit: int):
     """Make profiles of ngrams found in path."""
 
     MODEL_DIR = "./models"  # Top level directory to store models
@@ -22,7 +22,7 @@ def make_profiles(path: str, n: int, limit: int):
         os.mkdir(out_dir)
 
     # Get all files at the path
-    read_file_names = [file_path for file_path in os.listdir(path)]
+    read_file_names = [file_path for file_path in os.listdir(datafolder)]
 
     for file_name in read_file_names:
 
@@ -32,7 +32,7 @@ def make_profiles(path: str, n: int, limit: int):
             encoding = "latin1"
 
         # Get full path from adding filename to directory
-        full_path = os.path.join(path, file_name)
+        full_path = os.path.join(datafolder, file_name)
 
         # Open file at this path and read the contents as a string
         with open(full_path, "r", encoding=encoding) as f:

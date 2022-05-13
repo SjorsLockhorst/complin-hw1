@@ -10,6 +10,8 @@ from langdetect import (
     cosine_similarity
 )
 
+from match_language import LangMatcher
+
 class TestLangdetect(unittest.TestCase):
     def test_prepare(self):
         test = 'This is <cough,cough> "HAL-9000".  Don\'t touch!'
@@ -43,3 +45,9 @@ class TestLangdetect(unittest.TestCase):
         score = cosine_similarity(table1, table2)
         # The score *should be* 0.8, but we get floating point error
         self.assertLess(abs(score - 4/5), 0.000001)
+
+class TestMatchLanguage(unittest.TestCase):
+
+    def test_language_match(self):
+        langmatcher = LangMatcher("./models/2-200")
+        self.assertEqual(langmatcher.recognize("./datafiles/training/Ewe-UTF8"), "Ewe")
