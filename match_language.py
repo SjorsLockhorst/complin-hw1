@@ -1,4 +1,5 @@
 import os
+import sys
 from typing import List, Tuple, Union
 
 import langdetect as ld
@@ -57,4 +58,21 @@ class LangMatcher:
     def recognize(self, filename: str, encoding: str = "utf-8"):
         """Open a file, read its contents and recognize which language it is."""
         with open(filename, "r", encoding=encoding) as f:
-            return self.score(f.read())[0]
+            return self.score(f.read())
+
+
+if __name__ == "__main__":
+    if len(sys.argv) < 3:
+        model_dir = "models/3-200"
+        test_files = ["datafiles/test/europarl-90/ep-00-02-03.nl"]
+        print(f"No paths provided so using default {model_dir} and {test_files[0]}")
+    else:
+        model_dir = sys.argv[1]
+        test_files = sys.argv[2:-1]
+
+    lm = LangMatcher(model_dir)
+
+    for test_file in test_files:
+        lang, score = lm.recognize(test_file)
+        print(f"{test_file} recognized as language {lang} with score {score}")
+
