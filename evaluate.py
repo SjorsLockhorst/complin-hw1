@@ -6,6 +6,8 @@ import match_language as ml
 def eval(model_path: str, test_path: str):
     """
     Evaluates how well a model is preforming
+
+
     """
     language_code_map = {
         "da": "Danish",
@@ -34,6 +36,7 @@ def eval(model_path: str, test_path: str):
         if expected_lang != predicted_lang:
             message += f" ERROR {expected_lang}"
             errors += 1
+        print(message)
 
     return errors, len(os.listdir(test_path)) - errors
 
@@ -65,4 +68,4 @@ if __name__ == "__main__":
             ngram_type = f"{n}gram"
 
         error, correct = eval(model_path, test_path)
-        print(f"{ngram_type} models with limit {lim} for {sent_length}-word sentences: {correct} correct, {error} incorrect.")
+        print(f"\n {ngram_type} models with limit {lim} for {sent_length}-word sentences: {correct} correct, {error} incorrect. \n")

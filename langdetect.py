@@ -7,13 +7,34 @@ Table = Dict[str, int]
 def prepare(text: str) -> List[str]:
     """
     Tokinzes a text into words.
+
+    Parameters
+    ----------
+    text: str
+        The text to tokenize.
+
+    Returns
+    -------
+    List[str]
+        List of words from text.
     """
     subbed = re.sub(r'[!?",.()<>]', r' ', text)
     return subbed.split()
 
 def ngrams(seq: Sequence[Any], n: int = 3) -> List[Any]:
     """
-    Creates ngrams from a Sequence.
+    Creates ngrams.
+
+    Parameters
+    ----------
+    seq: Sequence[Any]
+        Any sequence to create ngrams from.
+    n : int, default=3
+
+    Returns
+    -------
+    List[Any]
+        List containing ngrams.
     """
     ngrams = []  # Store all ngrams here
     i = 0
@@ -24,9 +45,29 @@ def ngrams(seq: Sequence[Any], n: int = 3) -> List[Any]:
         i += 1
     return ngrams
 
-def ngram_table(text: str, n: int = 3, limit: int = 0) -> dict:
-    """Frequency counts of ngrams in text."""
+def ngram_table(text: str, n: int = 3, limit: int = 0) -> Table:
+    """
+    Create an ngram table.
 
+    Tokenizes a text on words, and generates ngrams for the characters of each word.
+    Then, returns the `limit` amount of most common ngrams from text.
+
+    Parameters
+    ----------
+    text : str
+        Text to tokenize and generate ngrams from.
+    n : int, default=3
+        Size of ngrams to use.
+    limit : int, default=0
+        Limit how many most common ngrams get returned, when 0, all frequencies are
+        returned.
+
+
+    Returns
+    -------
+    Table
+        A dictionary containing str keys, the ngrams, and int values, the frequencies.
+    """
     tokens = prepare(text)  # Clean and tokenize the text
     surrounded = [
         f"<{token}>" for token in tokens  # Surround tokens with <token>
@@ -43,7 +84,19 @@ def ngram_table(text: str, n: int = 3, limit: int = 0) -> dict:
 
 
 def read_ngrams(filename: str) -> Table:
-    """Read ngram frequency table from a file."""
+    """
+    Reads a ngram frequency table from a file.
+
+    Parameters
+    ----------
+    filename : str
+        Path to file to read ngrams from.
+
+    Returns
+    -------
+    Table
+        A dictionary containing str keys, the ngrams, and int values, the frequencies.
+    """
     with open(filename, "r", encoding="utf-8") as f:
         lines = f.readlines()
     table = {}
@@ -57,6 +110,13 @@ def read_ngrams(filename: str) -> Table:
 def write_ngrams(table: Table, filename: str):
     """
     Writes ngram frequency table to a file.
+
+    Parameters
+    ----------
+    table : Table
+        A dictionary containing str keys, the ngrams, and int values, the frequencies.
+    filename : str
+        File path to write ngram table to.
     """
     # Sort table by values
     sorted_table = dict(sorted(table.items(), key=lambda x: x[1], reverse=True))
@@ -70,11 +130,34 @@ def write_ngrams(table: Table, filename: str):
 
 def cosine_similarity(known: Table, unknown: Table) -> float:
     """
-    Calculates cosine similarity
+    Calculates cosine similarity between ngram tables.
+
+    Parameters
+    ----------
+    known : Table
+        Trained ngram table.
+    unknown : Table
+        Newly observed ngram table.
+
+    Returns
+    -------
+    float
+        The cosine similarity, some float between 0 and 1.
     """
 
-    def _magnitude(x: List[int]):
-        """Calculate the magnitute of a vector."""
+    def _magnitude(x: List[int]) -> float:
+        """
+        Calculate the magnitute of a vector.
+
+        Parameters
+        ----------
+        x : List[int]
+            
+        Returns
+        -------
+        float
+            Magnitude of vector x.
+        """
         mag = 0
         for x_i in x:
             mag += x_i**2
