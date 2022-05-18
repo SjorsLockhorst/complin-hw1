@@ -50,4 +50,4 @@ class TestMatchLanguage(unittest.TestCase):
 
     def test_language_match(self):
         langmatcher = LangMatcher("./models/2-200")
-        self.assertEqual(langmatcher.recognize("./datafiles/training/Ewe-UTF8"), "Ewe")
+        self.assertEqual(langmatcher.recognize("./datafiles/training/Ewe-UTF8")[0], "Ewe")

@@ -52,3 +52,4 @@ def make_profiles(datafolder: str, n: int, limit: int):
 if __name__ == "__main__":
     make_profiles("./datafiles/training", 3, 200)
     make_profiles("./datafiles/training", 2, 200)
+

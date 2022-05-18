@@ -19,19 +19,18 @@ def ngrams(seq: Sequence[Any], n: int = 3) -> List[Any]:
     i = 0
 
     while i <= len(seq) - n:  # Loop untill last ngram
-        ngram = seq[i:n + i]  # Slice out an ngram
+        ngram = seq[i:i + n]  # Slice out an ngram
         ngrams.append(ngram)  # Add it to the list
         i += 1
     return ngrams
 
-def ngram_table(text: str, n: int = 3, limit: int = 0):
+def ngram_table(text: str, n: int = 3, limit: int = 0) -> dict:
     """Frequency counts of ngrams in text."""
 
     tokens = prepare(text)  # Clean and tokenize the text
     surrounded = [
         f"<{token}>" for token in tokens  # Surround tokens with <token>
     ]
-
     all_ngrams = []  # Store all found ngrams
     for token in surrounded:
         all_ngrams += ngrams(token, n)  # Get ngrams from each surrounded token
