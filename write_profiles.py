@@ -8,7 +8,22 @@ from langdetect import (
 
 
 def make_profiles(datafolder: str, n: int, limit: int):
-    """Make profiles of ngrams found in path."""
+    """
+    Make language profiles from training samples.
+
+    Load all files containing natural language from a datafolder, then create ngram
+    tables with `n` as the ngram size and `limit` as the size of each table.
+    Then write these tables out to a folder.
+
+    Parameters
+    ----------
+    datafolder : str
+        Path to folder where training sample files are stored.
+    n : int
+        Size of ngrams to use.
+    limit : int
+        Amount of most common ngrams to put in each final ngram table.
+    """
 
     MODEL_DIR = "./models"  # Top level directory to store models
 
@@ -50,6 +65,7 @@ def make_profiles(datafolder: str, n: int, limit: int):
 
 
 if __name__ == "__main__":
+    # Create 2 sets of models, bigrams and trigrams, both with 200 limit
     make_profiles("./datafiles/training", 3, 200)
     make_profiles("./datafiles/training", 2, 200)
 
