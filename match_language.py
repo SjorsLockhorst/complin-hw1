@@ -111,7 +111,7 @@ if __name__ == "__main__":
     # When not enough arguments, use default files
     if len(sys.argv) < 3:
         model_dir = "models/3-200"
-        test_files = ["datafiles/test/europarl-90/ep-00-02-03.nl"]
+        test_files = ["datafiles/test/europarl-90/ep-00-02-02.fi"]
         print(f"No paths provided so using default {model_dir} and {test_files[0]}")
     else:
         model_dir = sys.argv[1]

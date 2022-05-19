@@ -118,7 +118,7 @@ def write_ngrams(table: Table, filename: str):
     filename : str
         File path to write ngram table to.
     """
-    # Sort table by values
+
     sorted_table = dict(sorted(table.items(), key=lambda x: x[1], reverse=True))
 
     # Put the lines in the correct format
@@ -180,9 +180,13 @@ def cosine_similarity(known: Table, unknown: Table) -> float:
     unknown_values = list(unknown.values())
 
     # Calculate final result
-    cosine = (
-        dot_product / (
-            _magnitude(known_values) * _magnitude(unknown_values)
+    try:
+        cosine = (
+            dot_product / (
+                _magnitude(known_values) * _magnitude(unknown_values)
+            )
         )
-    )
+    except ZeroDivisionError:
+        print(known)
+        print(unknown)
     return cosine

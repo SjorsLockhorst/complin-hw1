@@ -2,9 +2,14 @@ import os
 import itertools
 from typing import Tuple
 
+
 import match_language as ml
 
-def eval(model_path: str, test_path: str) -> Tuple[float, float]:
+def eval(
+    model_path: str,
+    test_path: str,
+    verbose: bool = True
+) -> Tuple[float, float]:
     """
     Evaluates how well a model is preforming against some test samples.
 
@@ -58,15 +63,14 @@ def eval(model_path: str, test_path: str) -> Tuple[float, float]:
         if expected_lang != predicted_lang:
             message += f" ERROR {expected_lang}"
             errors += 1
-        print(message)
+
+        if verbose:
+            print(message)
 
     # Return the amount of errors, and the amount of correct predictions
     return errors, len(os.listdir(test_path)) - errors
 
-
-
-if __name__ == "__main__":
-
+def eval_all(verbose: bool = True):
     MODEL_DIR = "./models/"
     TEST_DIR = "./datafiles/test/"
 
@@ -80,6 +84,8 @@ if __name__ == "__main__":
     # Cartesion product to obtain all possible combinations of model and test dirs
     all_combinations = list(itertools.product(model_paths, test_paths))
 
+    data = {}
+
     # Try each of these combinations
     for model_path, test_path in all_combinations:
 
@@ -89,7 +95,7 @@ if __name__ == "__main__":
         lim = int(lim_str)
 
         # Get sentence length from test file name
-        sent_length = os.path.basename(os.path.normpath(test_path)).split("-")[-1]
+        sent_length = int(os.path.basename(os.path.normpath(test_path)).split("-")[-1])
 
         # Generate a message about the performance of the model overall
         if n == 2:
@@ -99,7 +105,21 @@ if __name__ == "__main__":
         else:
             ngram_type = f"{n}gram"
 
-        error, correct = eval(model_path, test_path)
+        error, correct = eval(model_path, test_path, verbose=False)
         message = f"\n {ngram_type} models with limit {lim} for {sent_length}-word "\
             f"sentences: {correct} correct, {error} incorrect. \n"
-        print(message)
+
+        percentage_correct = correct / (error + correct) * 100
+        row = [n, lim, sent_length, percentage_correct]
+        if ngram_type not in data:
+            data[ngram_type] = [row]
+        else:
+            data[ngram_type].append(row)
+        if verbose:
+            print(message)
+    return data
+
+
+
+if __name__ == "__main__":
+    eval_all()
