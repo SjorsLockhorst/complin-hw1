@@ -1,10 +1,7 @@
 import os
 import re
 
-from langdetect import (
-    ngram_table,
-    write_ngrams
-)
+import langdetect as ld
 
 
 def make_profiles(datafolder: str, n: int, limit: int):
@@ -54,14 +51,14 @@ def make_profiles(datafolder: str, n: int, limit: int):
             text = f.read()
 
         # Use function from langdetect to read ngrams into table
-        table = ngram_table(text, n=n, limit=limit)
+        table = ld.ngram_table(text, n=n, limit=limit)
 
         clean_out_file_name = re.sub(r"-.*$", "", file_name)
         # Create output file based on out_dir and input file name
         out_file_path = os.path.join(out_dir, clean_out_file_name)
 
         # Write the ngrams to this file
-        write_ngrams(table, out_file_path)
+        ld.write_ngrams(table, out_file_path)
 
 
 if __name__ == "__main__":
