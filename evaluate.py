@@ -5,6 +5,7 @@ from typing import Tuple
 
 import match_language as ml
 
+
 def eval(
     model_path: str,
     test_path: str,
@@ -70,6 +71,7 @@ def eval(
     # Return the amount of errors, and the amount of correct predictions
     return errors, len(os.listdir(test_path)) - errors
 
+
 def eval_all(verbose: bool = True):
     MODEL_DIR = "./models/"
     TEST_DIR = "./datafiles/test/"
@@ -79,7 +81,8 @@ def eval_all(verbose: bool = True):
 
     # Get full test paths and model paths
     test_paths = [os.path.join(TEST_DIR, test_dir) for test_dir in test_dirs]
-    model_paths = [os.path.join(MODEL_DIR, model_dir) for model_dir in model_dirs]
+    model_paths = [os.path.join(MODEL_DIR, model_dir)
+                   for model_dir in model_dirs]
 
     # Cartesion product to obtain all possible combinations of model and test dirs
     all_combinations = list(itertools.product(model_paths, test_paths))
@@ -90,12 +93,14 @@ def eval_all(verbose: bool = True):
     for model_path, test_path in all_combinations:
 
         # Get n and limit from model directory name
-        n_str, lim_str = os.path.basename(os.path.normpath(model_path)).split("-")
+        n_str, lim_str = os.path.basename(
+            os.path.normpath(model_path)).split("-")
         n = int(n_str)
         lim = int(lim_str)
 
         # Get sentence length from test file name
-        sent_length = int(os.path.basename(os.path.normpath(test_path)).split("-")[-1])
+        sent_length = int(os.path.basename(
+            os.path.normpath(test_path)).split("-")[-1])
 
         # Generate a message about the performance of the model overall
         if n == 2:
@@ -105,7 +110,7 @@ def eval_all(verbose: bool = True):
         else:
             ngram_type = f"{n}gram"
 
-        error, correct = eval(model_path, test_path, verbose=False)
+        error, correct = eval(model_path, test_path, verbose=verbose)
         message = f"\n {ngram_type} models with limit {lim} for {sent_length}-word "\
             f"sentences: {correct} correct, {error} incorrect. \n"
 
@@ -120,6 +125,5 @@ def eval_all(verbose: bool = True):
     return data
 
 
-
 if __name__ == "__main__":
-    eval_all()
+    eval_all(verbose=True)

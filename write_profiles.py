@@ -66,8 +66,5 @@ def make_profiles(datafolder: str, n: int, limit: int):
 
 if __name__ == "__main__":
     # Create 2 sets of models, bigrams and trigrams, both with 200 limit
-    for i in range(1, 10):
-        make_profiles("./datafiles/training", i, 200)
-
-
-
+    make_profiles("./datafiles/training", 2, 200)
+    make_profiles("./datafiles/training", 3, 200)

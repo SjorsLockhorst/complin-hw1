@@ -12,18 +12,20 @@ from langdetect import (
 
 from match_language import LangMatcher
 
+
 class TestLangdetect(unittest.TestCase):
     def test_prepare(self):
         test = 'This is <cough,cough> "HAL-9000".  Don\'t touch!'
         tested_tokens = prepare(test)
-        expected = ['This', 'is', 'cough', 'cough', 'HAL-9000', "Don't", 'touch']
+        expected = ['This', 'is', 'cough',
+                    'cough', 'HAL-9000', "Don't", 'touch']
         self.assertEqual(tested_tokens, expected)
 
     def test_ngrams(self):
         trigrams = ngrams("R2.D2")
         expected = ['R2.', '2.D', '.D2']
-                
-        self.assertEqual(trigrams , expected)
+
+        self.assertEqual(trigrams, expected)
 
     def test_ngrams_table(self):
         result = ngram_table("hiep, hiep, hoera!", n=3, limit=4)
@@ -40,14 +42,16 @@ class TestLangdetect(unittest.TestCase):
         self.assertEqual(table, reread_table)
 
     def test_cosine_similarity(self):
-        table1 = { "<he": 2, "het": 1 }
-        table2 = { "<he": 2, "hem": 1 }
+        table1 = {"<he": 2, "het": 1}
+        table2 = {"<he": 2, "hem": 1}
         score = cosine_similarity(table1, table2)
         # The score *should be* 0.8, but we get floating point error
         self.assertLess(abs(score - 4/5), 0.000001)
+
 
 class TestMatchLanguage(unittest.TestCase):
 
     def test_language_match(self):
         langmatcher = LangMatcher("./models/2-200")
-        self.assertEqual(langmatcher.recognize("./datafiles/training/Ewe-UTF8")[0], "Ewe")
+        self.assertEqual(langmatcher.recognize(
+            "./datafiles/training/Ewe-UTF8")[0], "Ewe")

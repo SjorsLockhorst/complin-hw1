@@ -3,6 +3,7 @@ from evaluate import eval_all
 from prettytable import PrettyTable
 import matplotlib.pyplot as plt
 
+
 def visualise(show_table: bool = True, show_graph: bool = True, sample_size: int = 10):
 
     data = eval_all(verbose=False)
@@ -35,6 +36,7 @@ def visualise(show_table: bool = True, show_graph: bool = True, sample_size: int
         plt.ylabel("Correct %")
         plt.savefig(f"./results/n_test_sample_{sample_size}")
         plt.show()
+
 
 if __name__ == "__main__":
     sample_sizes = [10, 30, 90]

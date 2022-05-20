@@ -6,6 +6,7 @@ import langdetect as ld
 
 Score = Tuple[str, float]
 
+
 class LangMatcher:
     """
     Class that can read a file and find a matching language.
@@ -43,7 +44,6 @@ class LangMatcher:
             path = os.path.join(modeldir, file)
             table = ld.read_ngrams(path)
             self.language_map[file] = table
-
 
     def score(self, text: str, k_best: int = 1) -> List[Score]:
         """
@@ -112,7 +112,8 @@ if __name__ == "__main__":
     if len(sys.argv) < 3:
         model_dir = "models/3-200"
         test_files = ["datafiles/test/europarl-90/ep-00-02-02.fi"]
-        print(f"No paths provided so using default {model_dir} and {test_files[0]}")
+        print(
+            f"No paths provided so using default {model_dir} and {test_files[0]}")
     else:
         model_dir = sys.argv[1]
         test_files = sys.argv[2:]

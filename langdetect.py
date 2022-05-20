@@ -4,6 +4,7 @@ from typing import List,  Sequence, Any, Dict
 
 Table = Dict[str, int]
 
+
 def prepare(text: str) -> List[str]:
     """
     Tokinzes a text into words.
@@ -20,6 +21,7 @@ def prepare(text: str) -> List[str]:
     """
     subbed = re.sub(r'[!?",.()<>]', r' ', text)
     return subbed.split()
+
 
 def ngrams(seq: Sequence[Any], n: int = 3) -> List[Any]:
     """
@@ -44,6 +46,7 @@ def ngrams(seq: Sequence[Any], n: int = 3) -> List[Any]:
         ngrams.append(ngram)  # Add it to the list
         i += 1
     return ngrams
+
 
 def ngram_table(text: str, n: int = 3, limit: int = 0) -> Table:
     """
@@ -106,7 +109,6 @@ def read_ngrams(filename: str) -> Table:
     return table
 
 
-
 def write_ngrams(table: Table, filename: str):
     """
     Writes ngram frequency table to a file.
@@ -119,7 +121,8 @@ def write_ngrams(table: Table, filename: str):
         File path to write ngram table to.
     """
 
-    sorted_table = dict(sorted(table.items(), key=lambda x: x[1], reverse=True))
+    sorted_table = dict(
+        sorted(table.items(), key=lambda x: x[1], reverse=True))
 
     # Put the lines in the correct format
     lines = [f"{freq} {word}\n" for word, freq in sorted_table.items()]
@@ -127,6 +130,7 @@ def write_ngrams(table: Table, filename: str):
     # Write lines to a file
     with open(filename, "w", encoding="utf-8") as f:
         f.writelines(lines)
+
 
 def cosine_similarity(known: Table, unknown: Table) -> float:
     """
@@ -152,7 +156,7 @@ def cosine_similarity(known: Table, unknown: Table) -> float:
         Parameters
         ----------
         x : List[int]
-            
+
         Returns
         -------
         float
@@ -180,13 +184,9 @@ def cosine_similarity(known: Table, unknown: Table) -> float:
     unknown_values = list(unknown.values())
 
     # Calculate final result
-    try:
-        cosine = (
-            dot_product / (
-                _magnitude(known_values) * _magnitude(unknown_values)
-            )
+    cosine = (
+        dot_product / (
+            _magnitude(known_values) * _magnitude(unknown_values)
         )
-    except ZeroDivisionError:
-        print(known)
-        print(unknown)
+    )
     return cosine
